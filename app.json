@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "RSA",
+    "slug": "RSA",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
