@@ -3,13 +3,19 @@ import React, { useState } from "react";
 import { StyleSheet, Text, View, TextInput, Button, Image } from "react-native";
 import axios from "axios";
 
+let server = "localhost"
+let port = "8000"
+
+
 export default function App() {
   const axios = require("axios").default;
   const [number, setNumber] = useState();
   const [result, setResult] = useState();
-  const handleResult = (value) => {
-    let fib = "P1: 1, P2: 2";
-    setResult(fib);
+  const handleResult = async (value) => {
+    let url = `https://${server}:${port}/primo/${value}`
+    await axios.get(url).then((res)=>{
+      setResult(res);
+    })
   };
   return (
     <View style={styles.container}>
@@ -33,7 +39,7 @@ export default function App() {
         }}
         title="Calcular"
       />
-      {result > 0 ? <Text>O valor é {result}</Text> : null}
+      {result ? <Text>O valor é {result}</Text> : null}
       <StatusBar style="auto" />
     </View>
   );
