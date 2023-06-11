@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { StyleSheet, Text, View, TextInput, Button, Image } from "react-native";
 import axios from "axios";
 
-let server = "localhost"
+let server = "172.15.2.139"
 let port = "8000"
 
 
@@ -12,10 +12,13 @@ export default function App() {
   const [number, setNumber] = useState();
   const [result, setResult] = useState();
   const handleResult = async (value) => {
-    let url = `https://${server}:${port}/primo/${value}`
+    let url = `http://${server}:${port}/?numero=${value}`
     await axios.get(url).then((res)=>{
-      setResult(res);
+      setResult(res.data);
     })
+    .catch(err =>
+      console.error(err)
+    )
   };
   return (
     <View style={styles.container}>
@@ -39,7 +42,8 @@ export default function App() {
         }}
         title="Calcular"
       />
-      {result ? <Text>O valor é {result}</Text> : null}
+      {result && result.success? <Text style={styles.text}>O valor é {result.fator1} * {result.fator2} = {result.produto}</Text> : null}
+      {result && !result.success? <Text style={styles.text}>Não possui fatoração em dois primos</Text> : null}
       <StatusBar style="auto" />
     </View>
   );
@@ -54,6 +58,7 @@ const styles = StyleSheet.create({
   },
   button: {
     width: 200,
+    marginBottom:30
   },
   input: {
     height: 40,
@@ -67,4 +72,7 @@ const styles = StyleSheet.create({
     height: 200,
     borderWidth: 1,
   },
+  text: {
+    marginTop:10
+  }
 });
